@@ -28,28 +28,45 @@ export default function AllCountries() {
         async function getData() {
             const response = await fetch("https://api.covid19api.com/summary");
             let data = await response.json();
-            setGlobalData(Object.values(data.Countries))
-            console.log(data.Countries[0]);
+            setGlobalData(Object.values((data.Countries)));
+            console.log("Object Values" + Object.values(Object.values(data.Countries)[0]));
         }
         getData();
-    }, [])
+    }, []);
+
+    console.log("Global Data" + globalData);
 
     return (
         <div className={classes.root}>
-            <Grid container spacing={3}>
+            <table>
+                <tr>
+                    <th>Country Name</th>
+                    <th>Total Confirmed</th>
+                    <th>Total Recovered</th>
+                    <th>Total Deaths</th>
+                </tr>
                 {
-                    Object.keys(globalData[0]).map((key, ind) => {
+                    globalData.map((key, ind) => {
                         return (
-                            <Grid item xs={12} sm={4} key={ind}>
-                                <Paper className={classes.paper} elevation={3}>
-                                    <h3 className={classes.title}>{key.split(/(?=[A-Z])/).join(" ").toUpperCase()}</h3>
-                                    <h3>{globalData[key]}</h3>
-                                </Paper>
-                            </Grid>
+                            <tr>
+                                <td>{globalData[ind].Country}</td>
+                                <td>
+                                    {globalData[ind].TotalConfirmed}
+                                </td>
+                                <td>
+                                    {globalData[ind].TotalRecovered}
+                                </td>
+                                <td>
+                                    {globalData[ind].TotalDeaths
+                                    }
+                                </td>
+                            </tr>
+
+
                         )
                     })
                 }
-            </Grid>
+            </table>
         </div>
     );
 }
